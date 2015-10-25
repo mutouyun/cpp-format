@@ -1,0 +1,28 @@
+# Build rules
+
+all: $(BUILD_RULES)
+
+begin:
+	@echo ""
+	@echo ================================
+	@echo  - Building: $(PRO_NAME)...
+	@echo ================================
+	@echo ""
+
+# Compile
+
+$(OBJ_FILES): $(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp $(INC_FILES) $(DEPEND_TARGET)
+	@echo Compiling $<...
+	@$(CX) $(CFLAGS) -o $@ $(INCPATH) -c $<
+
+$(PRO_NAME): $(OBJ_FILES) $(DEPEND)
+ifeq ($(BUILD_TYPE), lib)
+	@echo Linking $@.a...
+	@$(AR) $(AFLAGS) $(OUT)/$@.a $^
+else
+	@echo Linking $@...
+	@$(CX) $(LFLAGS) -o $(OUT)/$@ $^ $(THIRD_LIB)
+endif
+	@echo ""
+	@echo  - Building complete: $(PRO_NAME).
+	@echo ""
