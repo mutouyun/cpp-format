@@ -15,7 +15,7 @@ addons:
       - clang
 
 install:
-  - if [ "$CC" == "gcc" ]; then apt-get install gcc-4.8-multilib g++-4.8-multilib
+  - if [ "$CC" == "gcc" ]; then apt-get install gcc-4.8-multilib g++-4.8-multilib; fi
   - if [ "$CC" == "gcc" ]; then export CC=gcc-4.8 CXX=g++-4.8; fi
   - CX=$CXX
   - $CX --version
