@@ -11,10 +11,11 @@ addons:
     packages:
       - gcc-4.8
       - g++-4.8
+      - gcc-4.8-multilib
+      - g++-4.8-multilib
       - clang
 
 install:
-  - sudo apt-get -qq install gcc-4.8-multilib g++-4.8-multilib
   - if [ "$CC" == "gcc" ]; then export CC=gcc-4.8 CXX=g++-4.8; fi
   - export CX=$CXX
   - $CX --version
