@@ -14,10 +14,10 @@ addons:
       - clang
 
 install:
-  - if [ "$CC" == "gcc" ]; then sudo apt-get -qq install gcc-4.8-multilib g++-4.8-multilib; fi
+  - sudo apt-get -qq install gcc-4.8-multilib g++-4.8-multilib; fi
+  - if [ "$CC" == "clang" ]; then export THIRD_PATH="/usr/include/c++/4.8 -I/usr/include/x86_64-linux-gnu/c++/4.8"; fi
   - if [ "$CC" == "gcc" ]; then export CC=gcc-4.8 CXX=g++-4.8; fi
   - export CX=$CXX
   - $CX --version
-  - if [ "$CC" == "clang" ]; then export THIRD_PATH="/usr/include/c++/4.8 -I/usr/include/x86_64-linux-gnu/c++/4.8"; fi
 
 script: cd ./build && make
