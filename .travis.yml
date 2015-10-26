@@ -19,4 +19,6 @@ install:
   - export CX=$CXX
   - $CX --version
 
-script: cd ./build && make
+script:
+  - cd ./build && make
+  - ./bin/release/$CC/ut-test
