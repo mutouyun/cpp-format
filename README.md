@@ -1,9 +1,12 @@
 # A C++ Formatting Library
-C#/Rust/Python style formatting in C++.  
-The codes has been compiled in:  
+
+[![Build Status](https://travis-ci.org/mutouyun/cpp-format.svg?branch=master)](https://travis-ci.org/mutouyun/cpp-format)
+
+C#/Rust/Python style formatting in C++.
+# Compiler Support
  - MSVC-2015  
- - g++-4.9.1(-std=c++1y)  
- - clang-3.5.0-4(-std=c++1y)
+ - g++-4.8.1(-std=c++1y)  
+ - clang-3.4(-std=c++1y)
 
 # License
 Codes covered by the MIT License.
