@@ -4,17 +4,11 @@ compiler:
   - gcc
   - clang
 
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - gcc-4.8
-      - g++-4.8
-      - clang
-
 install:
-  - if [ "$CC" == "gcc" ]; then sudo apt-get install gcc-4.8-multilib g++-4.8-multilib; fi
+  - if [ "$CC" == "gcc" ]; then sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test; fi
+  - if [ "$CC" == "gcc" ]; then sudo apt-get -qq update; fi
+  - if [ "$CC" == "gcc" ]; then sudo apt-get -qq install gcc-4.8 g++-4.8; fi
+  - if [ "$CC" == "gcc" ]; then sudo apt-get -qq install gcc-4.8-multilib g++-4.8-multilib; fi
   - if [ "$CC" == "gcc" ]; then export CC=gcc-4.8 CXX=g++-4.8; fi
   - CX=$CXX
   - $CX --version
