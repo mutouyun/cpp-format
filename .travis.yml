@@ -20,5 +20,6 @@ install:
   - $CX --version
 
 script:
-  - cd ./build && make
-  - ./bin/release/$CC/ut-test
+  - cd ./build
+  - make debug=1 && make
+  - ./bin/debug/$CC/ut-test
