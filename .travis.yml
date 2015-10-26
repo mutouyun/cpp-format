@@ -8,4 +8,4 @@ os:
   - linux
   - osx
 
-script: make -f ./build/Makefile
+script: cd ./build && make
