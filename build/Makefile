@@ -32,9 +32,9 @@ endif
 
 export WORK_PATH  = $(CURDIR)/..
 export BUILD_PATH = $(CURDIR)
-export THIRD_LIB  =
+export THIRD_LIB ?=
 export TESTS_PATH = $(WORK_PATH)
-export INCPATH    = -I$(WORK_PATH) -I$(WORK_PATH)/include
+export INCPATH    = -I$(WORK_PATH) -I$(THIRD_PATH) -I$(WORK_PATH)/include
 
 ifeq ($(debug), 0)
 	# release
