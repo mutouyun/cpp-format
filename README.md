@@ -1,5 +1,5 @@
 # A C++ Formatting Library
-C# / Rust style formatting in C++.  
+C#/Rust/Python style formatting in C++.  
 The codes has been compiled in:  
  - MSVC-2015  
  - g++-4.9.1(-std=c++1y)  
@@ -26,7 +26,7 @@ format::printf([&buf](const std::string& str)
 }, "1234567%s%c\n", " ", c);
 
 /*
- * C# / Rust style formatting.
+ * C#/Rust/Python style format string syntax.
 */
 
 format::output("Hello, World!\n");
@@ -85,11 +85,24 @@ public:
 } foo;
 // Foo address: 0x12345678, 1, 2, 3
 format::output("{}, {}, {}, {}", foo, 1, 2, 3);
+
+/*
+ * And you could use one format::output to do multiple output.
+*/
+
 // 1 = 1, 2 = 2, 3 = 3\nfoo = Foo address: 0x12345678
 format::output("1 = {}, ", 1)
               ("2 = {}, ", 2)
-              ("3 = {}"  , 3).ln()
+              ("3 = {}"  , 3).ln() /* Use function "ln()" for '\n' output. */
               ("foo = {}", foo);
+{
+    auto flw = format::output("1 = {}", 1).ln(); // Store a format::follower object.
+    flw("2 = {}", 2).ln();                       // No output here.
+    flw();                                       // Output: 1 = 1\n2 = 2\n
+    flw("3 = {}", 3).ln();
+    flw.clear();                                 // The buffer of flw is cleared.
+    flw("4 = {}", 4).ln();
+}   // <-- The flw object has destructed, and output: 4 = 4\n
 
 /*
  * Any invalid input will throw an exception.
