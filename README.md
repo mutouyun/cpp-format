@@ -1,6 +1,7 @@
 # A C++ Formatting Library
 
 [![Build Status](https://travis-ci.org/mutouyun/cpp-format.svg?branch=master)](https://travis-ci.org/mutouyun/cpp-format)
+[![Build status](https://ci.appveyor.com/api/projects/status/i9g304g0aen62370/branch/master?svg=true)](https://ci.appveyor.com/project/mutouyun/cpp-format)
 
 C#/Rust/Python style formatting in C++.
 # Compiler Support
