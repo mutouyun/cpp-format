@@ -30,9 +30,10 @@ endif
 
 # Define workspace
 
-export WORK_PATH  = $(CURDIR)/..
-export BUILD_PATH = $(CURDIR)
-export THIRD_LIB ?=
+export WORK_PATH  ?= $(CURDIR)/..
+export BUILD_PATH ?= $(CURDIR)
+export THIRD_PATH ?=
+export THIRD_LIB  =
 export TESTS_PATH = $(WORK_PATH)
 export INCPATH    = -I$(WORK_PATH) -I$(THIRD_PATH) -I$(WORK_PATH)/include
 
