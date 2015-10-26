@@ -5,6 +5,7 @@ install:
   - sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
   - sudo apt-get -qq update
   - sudo apt-get -qq install g++-4.8
+  - sudo apt-get install gcc-4.8-multilib g++-4.8-multilib
   - export CC=gcc-4.8
   - export CXX=g++-4.8
   - export CX=$CXX
