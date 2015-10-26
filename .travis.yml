@@ -19,6 +19,7 @@ install:
   - export CX=$CXX
   - $CX --version
   - if [ "$CC" == "clang" ]; then export THIRD_PATH="/usr/include/c++/4.8 -I/usr/include/i386-linux-gnu/c++/4.8"; fi
+  - sudo apt-get install mlocate
   - locate c++config.h
 
 script: cd ./build && make
