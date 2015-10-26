@@ -18,9 +18,6 @@ install:
   - if [ "$CC" == "gcc" ]; then export CC=gcc-4.8 CXX=g++-4.8; fi
   - export CX=$CXX
   - $CX --version
-  - if [ "$CC" == "clang" ]; then export THIRD_PATH="/usr/include/c++/4.8 -I/usr/include/i386-linux-gnu/c++/4.8"; fi
-  - sudo apt-get install mlocate
-  - sudo updatedb
-  - sudo locate c++config.h
+  - if [ "$CC" == "clang" ]; then export THIRD_PATH="/usr/include/c++/4.8 -I/usr/include/x86_64-linux-gnu/c++/4.8"; fi
 
 script: cd ./build && make
