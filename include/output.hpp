@@ -303,18 +303,18 @@ continue_replace:
 template <typename F>
 using follower = detail_output::impl_<F>;
 
-template <typename F, typename... T, typename std::enable_if<OutputPred<F>::value, bool>::type = true>
-auto output(F&& out, const char* fmt, T&&... args)
+template <typename F, typename... A, typename std::enable_if<OutputPred<F>::value, bool>::type = true>
+auto output(F&& out, const char* fmt, A&&... args)
 {
     follower<F> flw { std::forward<F>(out) };
-    flw(fmt, std::forward<T>(args)...);
+    flw(fmt, std::forward<A>(args)...);
     return std::move(flw);
 }
 
-template <typename... T>
-auto output(const char* fmt, T&&... args)
+template <typename... A>
+auto output(const char* fmt, A&&... args)
 {
-    return format::output(std::cout, fmt, std::forward<T>(args)...);
+    return format::output(std::cout, fmt, std::forward<A>(args)...);
 }
 
 } // namespace format

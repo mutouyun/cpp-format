@@ -13,7 +13,7 @@
 #include <utility>      // std::forward, std::move
 #include <cstdint>      // intmax_t, uintmax_t
 #include <cstddef>      // size_t, ptrdiff_t
-#include <cstdio>       // vsnprintf
+#include <cstdio>       // snprintf
 #include <cstdarg>      // va_list, va_start, va_end
 
 #if defined(__GNUC__)
@@ -284,22 +284,27 @@ inline bool is_specifier(char c)
     return false;
 }
 
-template <typename F>
-int impl_(F&& out, const char* fmt, ...)
+#if defined(__GNUC__)
+#   pragma GCC diagnostic push
+#   pragma GCC diagnostic ignored "-Wformat-security"
+#endif/*__GNUC__*/
+template <typename F, typename... A>
+int impl_(F&& out, const char* fmt, A&&... args)
 {
-    va_list args;
-    va_start(args, fmt);
     std::string buf;
-    int n = ::vsnprintf(nullptr, 0, fmt, args);
-    if (n <= 0) goto exit_output;
-    buf.resize(n);
-    n = ::vsnprintf(const_cast<char*>(buf.data()), n + 1, fmt, args);
-    if (n <= 0) goto exit_output;
+    int n = ::snprintf(nullptr, 0, fmt, std::forward<A>(args)...);
+    if (n > 0)
+    {
+        buf.resize(n);
+        n = ::snprintf(const_cast<char*>(buf.data()), n + 1, fmt, std::forward<A>(args)...);
+        if (n != static_cast<int>(buf.size())) return n;
+    }
     do_out(std::forward<F>(out), std::move(buf));
-exit_output:
-    va_end(args);
     return n;
 }
+#if defined(__GNUC__)
+#   pragma GCC diagnostic pop
+#endif/*__GNUC__*/
 
 } // namespace detail_printf_
 
@@ -318,18 +323,18 @@ namespace use
     }
 }
 
-template <typename F, typename... T, typename std::enable_if<OutputPred<F>::value, bool>::type = true>
-int printf(F&& out, const char* fmt, T&&... args)
+template <typename F, typename... A, typename std::enable_if<OutputPred<F>::value, bool>::type = true>
+int printf(F&& out, const char* fmt, A&&... args)
 {
     if (fmt == nullptr) return 0;
-    detail_printf_::check(fmt, std::forward<T>(args)...);
-    return detail_printf_::impl_(std::forward<F>(out), fmt, std::forward<T>(args)...);
+    detail_printf_::check(fmt, std::forward<A>(args)...);
+    return detail_printf_::impl_(std::forward<F>(out), fmt, std::forward<A>(args)...);
 }
 
-template <typename... T>
-int printf(const char* fmt, T&&... args)
+template <typename... A>
+int printf(const char* fmt, A&&... args)
 {
-    return format::printf(std::cout, fmt, std::forward<T>(args)...);
+    return format::printf(std::cout, fmt, std::forward<A>(args)...);
 }
 
 } // namespace format
