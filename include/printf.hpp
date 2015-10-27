@@ -70,6 +70,23 @@ template <typename T>
 struct can_shift_left : decltype(detail_format_::can_shift_left_checker_::check<underlying<T>>(nullptr)) {};
 
 /*
+    Shift-left checking
+*/
+
+namespace detail_format_ {
+
+struct can_cast_str_checker_
+{
+    template <typename T> static std::true_type  check(decltype(static_cast<const char*>(std::declval<T&&>()))*);
+    template <typename T> static std::false_type check(...);
+};
+
+} // namespace detail_format_
+
+template <typename T>
+struct can_cast_str : decltype(detail_format_::can_cast_str_checker_::check<T>(nullptr)) {};
+
+/*
     Define concepts for SFINAE.
 */
 template <typename T, typename U>

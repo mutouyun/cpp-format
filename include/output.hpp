@@ -134,7 +134,6 @@ using rep_t = typename std::decay<A>::type;
 template <typename A, typename std::enable_if<pf<rep_t<A>>::value, bool>::type = true>
 void printf_buffer(std::string& buf, std::string&& cfg, A&& a)
 {
-    auto buf_out = [&buf](std::string&& str) { buf = std::move(str); };
     buf = "%";
     if (cfg.empty())
     {
@@ -148,10 +147,45 @@ void printf_buffer(std::string& buf, std::string&& cfg, A&& a)
     {
         buf += std::move(cfg) + pf<rep_t<A>>::val();
     }
-    format::printf(buf_out, buf.c_str(), std::forward<A>(a));
+    format::printf(use::strout(buf), buf.c_str(), std::forward<A>(a));
 }
 
-template <typename A, typename std::enable_if<!pf<rep_t<A>>::value, bool>::type = true>
+template <typename A, typename std::enable_if<!pf<rep_t<A>>::value && 
+                                               std::is_same<underlying<A>, std::string>::value, bool>::type = true>
+void printf_buffer(std::string& buf, std::string&& cfg, A&& a)
+{
+    buf = "%";
+    if (!cfg.empty() && detail_printf_::is_specifier(cfg.back()))
+    {
+        buf += std::move(cfg);
+    }
+    else
+    {
+        buf += "s";
+    }
+    format::printf(use::strout(buf), buf.c_str(), std::forward<A>(a).c_str());
+}
+
+template <typename A, typename std::enable_if<!pf<rep_t<A>>::value && 
+                                              !std::is_same<underlying<A>, std::string>::value &&
+                                               can_cast_str<A>::value, bool>::type = true>
+void printf_buffer(std::string& buf, std::string&& cfg, A&& a)
+{
+    buf = "%";
+    if (!cfg.empty() && detail_printf_::is_specifier(cfg.back()))
+    {
+        buf += std::move(cfg);
+    }
+    else
+    {
+        buf += "s";
+    }
+    format::printf(use::strout(buf), buf.c_str(), static_cast<const char*>(std::forward<A>(a)));
+}
+
+template <typename A, typename std::enable_if<!pf<rep_t<A>>::value && 
+                                              !std::is_same<underlying<A>, std::string>::value &&
+                                              !can_cast_str<A>::value, bool>::type = true>
 void printf_buffer(std::string& buf, std::string&& /*cfg*/, A&& a)
 {
     std::forward<A>(a)(impl_<decltype(use::strout(buf))>{ use::strout(buf) });

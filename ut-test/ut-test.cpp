@@ -165,6 +165,39 @@ TEST_METHOD(follower)
 
 ////////////////////////////////////////////////////////////////
 
+class Bar1
+{
+public:
+    explicit operator char*(void) const
+    {
+        return "I'm Bar1...";
+    }
+};
+
+class Bar2
+{
+public:
+    operator const char*(void) const
+    {
+        return "I'm Bar2...";
+    }
+};
+
+TEST_METHOD(string_object)
+{
+    std::string str = "Hello, World!";
+    format::output(out, "{}", str);
+    EXPECT_STREQ("Hello, World!", buf.c_str());
+
+    format::output(out, "{}", Bar1{});
+    EXPECT_STREQ("I'm Bar1...", buf.c_str());
+
+    format::output(out, "{}", Bar2{});
+    EXPECT_STREQ("I'm Bar2...", buf.c_str());
+}
+
+////////////////////////////////////////////////////////////////
+
 int main(void)
 {
     test_printf();
@@ -174,5 +207,6 @@ int main(void)
     test_default_out();
     test_custom_type();
     test_follower();
+    test_string_object();
     return 0;
 }
