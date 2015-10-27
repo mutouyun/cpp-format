@@ -12,7 +12,7 @@
 
 #define TEST_METHOD(TEST_NAME) void test_##TEST_NAME(void)
 
-#define EXPECT_STREQ(EXPECTED, ACTUAL) assert(strcmp(EXPECTED, ACTUAL) == 0);
+#define EXPECT_STREQ(EXPECTED, ACTUAL) assert(strcmp(EXPECTED, ACTUAL) == 0)
 #define EXPECT_THROW(STATEMENT, EXPECTED_EXCEPTION) \
 do {                                                \
     bool should_catch_expected_ = false;            \
