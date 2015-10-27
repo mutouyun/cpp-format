@@ -70,7 +70,7 @@ template <typename T>
 struct can_shift_left : decltype(detail_format_::can_shift_left_checker_::check<underlying<T>>(nullptr)) {};
 
 /*
-    Shift-left checking
+    Casting checking
 */
 
 namespace detail_format_ {
