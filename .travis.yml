@@ -22,3 +22,8 @@ script:
   - cd ./build
   - make debug=1 && make
   - ./bin/debug/$CC/ut-test
+
+notifications:
+  slack:
+    on_success: never
+    on_failure: never
