@@ -103,6 +103,30 @@ public:
     }
 };
 
+template <>
+class impl_<void>
+{
+public:
+    impl_(void)               = default;
+    impl_(impl_&&)            = default;
+    impl_& operator=(impl_&&) = default;
+
+    void operator()(void) {}
+
+    template <typename... T>
+    impl_&& operator()(const char* /*fmt*/, T&&... /*args*/)
+    {
+        return std::move(*this);
+    }
+
+    impl_&& ln(void)
+    {
+        return std::move(*this);
+    }
+
+    void clear(void) {}
+};
+
 /*
     Judge the format flags is or not matching the number of argument.
 */
@@ -130,6 +154,11 @@ bool is_match(std::string& cfg)
 
 template <typename A>
 using rep_t = typename std::decay<A>::type;
+
+inline void printf_buffer(std::string& buf, std::string&& /*cfg*/, bool a)
+{
+    format::printf(use::strout(buf), "%s", (a ? "true" : "false"));
+}
 
 template <typename A, typename std::enable_if<pf<rep_t<A>>::value, bool>::type = true>
 void printf_buffer(std::string& buf, std::string&& cfg, A&& a)
